@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="logical diagram" id="7095F92C-0BCB-6080-C21D-EC27DEE3D35B" version="3.5">
+<createdBy>dissa</createdBy>
+<createdTime>2026-08-30 13:24:58 UTC</createdTime>
+<ownerDesignName>logical diagram</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>7095F92C-0BCB-6080-C21D-EC27DEE3D35B</designId>
+</OSDM_Design>

@@ -1,0 +1,169 @@
+﻿@model CommunitySportsBooking.Models.Review
+
+@{
+    ViewData["Title"] = "Submit Review";
+
+    var facilities =
+        ViewBag.Facilities as List<CommunitySportsBooking.Models.Facility>
+        ?? new List<CommunitySportsBooking.Models.Facility>();
+}
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <span class="text-success fw-bold">
+            COMMUNITY SPORTS COUNCIL
+        </span>
+
+        <h1 class="fw-bold mt-2">
+            Submit a Review
+        </h1>
+
+        <p class="text-muted">
+            Tell us about your experience using a community sports facility.
+        </p>
+
+    </div>
+
+
+    @if (TempData["ReviewError"] != null)
+    {
+        <div class="alert alert-danger mb-4">
+            @TempData["ReviewError"]
+        </div>
+    }
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <form asp-controller="Review"
+                          asp-action="Create"
+                          method="post">
+
+
+                        <!-- FACILITY -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Select Facility
+                            </label>
+
+                            <select name="facilityId"
+                                    class="form-select"
+                                    required>
+
+                                <option value="">
+                                    -- Select a facility --
+                                </option>
+
+                                @foreach (var facility in facilities)
+                                {
+                                    <option value="@facility.FacilityID">
+                                        @facility.FacilityName
+                                    </option>
+                                }
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- RATING -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Rating
+                            </label>
+
+                            <select name="rating"
+                                    class="form-select"
+                                    required>
+
+                                <option value="">
+                                    -- Select Rating --
+                                </option>
+
+                                <option value="5">
+                                    ★★★★★ — Excellent
+                                </option>
+
+                                <option value="4">
+                                    ★★★★☆ — Very Good
+                                </option>
+
+                                <option value="3">
+                                    ★★★☆☆ — Good
+                                </option>
+
+                                <option value="2">
+                                    ★★☆☆☆ — Fair
+                                </option>
+
+                                <option value="1">
+                                    ★☆☆☆☆ — Poor
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- COMMENT -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Your Review
+                            </label>
+
+                            <textarea name="comment"
+                                      class="form-control"
+                                      rows="5"
+                                      placeholder="Share your experience..."
+                                      required></textarea>
+
+                        </div>
+
+
+                        <!-- SUBMIT -->
+
+                        <button type="submit"
+                                class="btn btn-success w-100 py-2">
+
+                            Submit Review
+
+                        </button>
+
+                    </form>
+
+
+                    <div class="text-center mt-4">
+
+                        <a asp-controller="Account"
+                           asp-action="MemberDashboard"
+                           class="text-success text-decoration-none">
+
+                            ← Back to Dashboard
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

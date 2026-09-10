@@ -1,0 +1,129 @@
+﻿@model List<CommunitySportsBooking.Models.Review>
+
+@{
+    ViewData["Title"] = "My Reviews";
+}
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <span class="text-success fw-bold">
+            COMMUNITY SPORTS COUNCIL
+        </span>
+
+        <h1 class="fw-bold mt-2">
+            My Reviews
+        </h1>
+
+        <p class="text-muted">
+            View the reviews you have submitted for sports facilities.
+        </p>
+
+    </div>
+
+
+    @if (TempData["ReviewSuccess"] != null)
+    {
+        <div class="alert alert-success mb-4">
+            <strong>Success!</strong>
+            @TempData["ReviewSuccess"]
+        </div>
+    }
+
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info text-center">
+
+            You have not submitted any reviews yet.
+
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+
+            @foreach (var review in Model)
+            {
+                <div class="col-md-6">
+
+                    <div class="card h-100 border-0 shadow-sm">
+
+                        <div class="card-body p-4">
+
+                            <h4 class="fw-bold">
+                                @review.FacilityName
+                            </h4>
+
+                            <div class="mb-3">
+
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= review.Rating)
+                                    {
+                                        <span class="text-warning fs-5">
+                                            ★
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted fs-5">
+                                            ☆
+                                        </span>
+                                    }
+                                }
+
+                            </div>
+
+                            <p>
+                                @review.Comment
+                            </p>
+
+                            <hr />
+
+                            <small class="text-muted">
+                                Submitted on
+                                @review.ReviewDate.ToString("dd MMM yyyy")
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+
+    <div class="text-center mt-5">
+
+        <a asp-controller="Review"
+           asp-action="Create"
+           class="btn btn-success me-2">
+
+            Write Another Review
+
+        </a>
+
+        <a asp-controller="Account"
+           asp-action="MemberDashboard"
+           class="btn btn-outline-secondary">
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>

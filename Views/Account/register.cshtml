@@ -1,0 +1,201 @@
+﻿@model CommunitySportsBooking.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Become a Member";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="text-center mb-4">
+
+                <span class="text-success fw-bold">
+                    COMMUNITY SPORTS COUNCIL
+                </span>
+
+                <h1 class="fw-bold mt-2">
+                    Become a Member
+                </h1>
+
+                <p class="text-muted">
+                    Create your account to search facilities,
+                    make bookings and share your experiences.
+                </p>
+
+            </div>
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-5">
+
+                    <div asp-validation-summary="All"
+                         class="text-danger mb-3">
+                    </div>
+
+                    <form asp-action="Register" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+
+                            <label asp-for="FullName"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="FullName"
+                                   class="form-control"
+                                   placeholder="Enter your full name" />
+
+                            <span asp-validation-for="FullName"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="Email"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="Email"
+                                   class="form-control"
+                                   placeholder="Enter your email address" />
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="Password"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="Password"
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Create a password" />
+
+                            <span asp-validation-for="Password"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="Phone"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="Phone"
+                                   class="form-control"
+                                   placeholder="Enter your phone number" />
+
+                            <span asp-validation-for="Phone"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label asp-for="Address"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <textarea asp-for="Address"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Enter your address">
+                            </textarea>
+
+                            <span asp-validation-for="Address"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Preferred Sports
+                            </label>
+
+                            <p class="text-muted small">
+                                Select one or more sports.
+                            </p>
+
+                            <div class="row">
+
+                                @foreach (var sport in Model.Sports)
+                                {
+                                    <div class="col-md-6 mb-2">
+
+                                        <div class="form-check">
+
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   name="SelectedSports"
+                                                   value="@sport.SportID"
+                                                   id="sport_@sport.SportID" />
+
+                                            <label class="form-check-label"
+                                                   for="sport_@sport.SportID">
+
+                                                @sport.SportName
+
+                                            </label>
+
+                                        </div>
+
+                                    </div>
+                                }
+
+                            </div>
+
+                            <span asp-validation-for="SelectedSports"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-success w-100 py-2">
+
+                            Create Member Account
+
+                        </button>
+
+                    </form>
+
+                    <div class="text-center mt-4">
+
+                        <span class="text-muted">
+                            Already have an account?
+                        </span>
+
+                        <a asp-action="Login"
+                           class="text-success fw-semibold">
+
+                            Sign In
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

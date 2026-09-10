@@ -1,0 +1,268 @@
+﻿@model CommunitySportsBooking.Models.Facility
+
+@{
+    ViewData["Title"] = "Facility Details";
+}
+
+<div class="container py-5">
+
+    <!-- PAGE HEADER -->
+
+    <div class="text-center mb-5">
+
+        <span class="text-success fw-bold">
+            COMMUNITY SPORTS FACILITIES
+        </span>
+
+        <h1 class="fw-bold mt-2">
+            Facility Details
+        </h1>
+
+        <p class="text-muted">
+            Explore the facility and check its availability before booking.
+        </p>
+
+    </div>
+
+
+    <!-- FACILITY DETAILS CARD -->
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-9">
+
+            <div class="card border-0 shadow-sm overflow-hidden">
+
+                <div class="p-4 p-md-5">
+
+
+                    <!-- FACILITY NAME AND STATUS -->
+
+                    <div class="d-flex justify-content-between
+                                align-items-start flex-wrap gap-3">
+
+                        <div>
+
+                            <span class="badge bg-light text-success mb-3">
+                                @Model.FacilityType
+                            </span>
+
+                            <h1 class="fw-bold mb-2">
+                                @Model.FacilityName
+                            </h1>
+
+                            <p class="text-muted mb-0">
+                                📍 @Model.Location
+                            </p>
+
+                        </div>
+
+
+                        <!-- AVAILABILITY STATUS -->
+                        @if (Model.Status.Equals(
+                                                "Available",
+                                                StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="badge bg-success px-3 py-2">
+                                ● Available
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger px-3 py-2">
+                                ● @Model.Status
+                            </span>
+                        }
+
+                    </div>
+
+
+                    <hr class="my-4" />
+
+
+                    <!-- ABOUT FACILITY -->
+
+                    <h4 class="fw-bold mb-3">
+                        About This Facility
+                    </h4>
+
+                    <p class="text-muted">
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Description))
+                        {
+                            @Model.Description
+                        }
+                        else
+                        {
+                            <span>
+                                This facility is available for
+                                community sports and recreational activities.
+                            </span>
+                        }
+
+                    </p>
+
+
+                    <!-- INFORMATION CARDS -->
+
+                    <div class="row g-3 mt-4">
+
+
+                        <!-- FACILITY TYPE -->
+
+                        <div class="col-md-4">
+
+                            <div class="p-4 bg-light rounded-3 h-100">
+
+                                <div class="fs-3 mb-2">
+                                    🏟️
+                                </div>
+
+                                <small class="text-muted d-block">
+                                    Facility Type
+                                </small>
+
+                                <strong>
+                                    @Model.FacilityType
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CAPACITY -->
+
+                        <div class="col-md-4">
+
+                            <div class="p-4 bg-light rounded-3 h-100">
+
+                                <div class="fs-3 mb-2">
+                                    👥
+                                </div>
+
+                                <small class="text-muted d-block">
+                                    Capacity
+                                </small>
+
+                                <strong>
+                                    @Model.Capacity people
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- RATE -->
+
+                        <div class="col-md-4">
+
+                            <div class="p-4 bg-light rounded-3 h-100">
+
+                                <div class="fs-3 mb-2">
+                                    💰
+                                </div>
+
+                                <small class="text-muted d-block">
+                                    Booking Rate
+                                </small>
+
+                                <strong>
+                                    Rs. 900 / hour
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOOKING SECTION -->
+
+                    <div class="mt-5 p-4 rounded-3 facility-booking-box">
+
+                        <div class="row align-items-center">
+
+                            <div class="col-md-8">
+
+                                <h4 class="fw-bold mb-2">
+                                    Ready to book?
+                                </h4>
+
+                                <p class="text-muted mb-md-0">
+
+                                    Select your preferred date and time
+                                    to reserve this facility.
+
+                                </p>
+
+                            </div>
+
+
+                            <div class="col-md-4 text-md-end">
+
+                                @if (Model.Status.Equals(
+                                                                "Available",
+                                                                StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <a asp-controller="Booking"
+                                       asp-action="Create"
+                                       asp-route-facilityId="@Model.FacilityID"
+                                       class="btn btn-success px-4 py-3">
+
+                                        Book This Facility
+
+                                    </a>
+                                }
+                                else
+                                {
+                                    <button type="button"
+                                            class="btn btn-secondary px-4 py-3"
+                                            disabled>
+
+                                        Currently Unavailable
+
+                                    </button>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- NAVIGATION LINKS -->
+
+            <div class="d-flex justify-content-between mt-4">
+
+                <a asp-controller="Facility"
+                   asp-action="Search"
+                   class="text-success text-decoration-none">
+
+                    ← Back to Facilities
+
+                </a>
+
+
+                <a asp-controller="Review"
+                   asp-action="Search"
+                   class="text-success text-decoration-none">
+
+                    View Reviews →
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

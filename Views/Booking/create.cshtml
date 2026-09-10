@@ -1,0 +1,790 @@
+﻿@model CommunitySportsBooking.Models.Facility
+
+@{
+    ViewData["Title"] = "Book Facility";
+}
+
+<div class="container py-5">
+
+    <!-- PAGE HEADER -->
+    <div class="text-center mb-5">
+
+        <span class="text-success fw-bold">
+            COMMUNITY SPORTS COUNCIL
+        </span>
+
+        <h1 class="fw-bold mt-2">
+            Book a Facility
+        </h1>
+
+        <p class="text-muted">
+            Choose your date, time and preferred payment method.
+        </p>
+
+    </div>
+
+
+    <!-- BOOKING ERROR -->
+    @if (TempData["BookingError"] != null)
+    {
+        <div class="alert alert-danger mb-4">
+            <strong>Booking Error</strong>
+            <div>
+                @TempData["BookingError"]
+            </div>
+        </div>
+    }
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4 p-md-5">
+
+
+                    <!-- FACILITY INFORMATION -->
+
+                    <div class="mb-4">
+
+                        <span class="badge bg-success mb-2">
+                            @Model.Status
+                        </span>
+
+                        <h2 class="fw-bold mb-2">
+                            @Model.FacilityName
+                        </h2>
+
+                        <p class="text-muted mb-0">
+
+                            @Model.FacilityType
+
+                            <span class="mx-2">•</span>
+
+                            @Model.Location
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- FACILITY DETAILS -->
+
+                    <div class="row g-3 mb-4">
+
+                        <div class="col-md-4">
+
+                            <div class="p-3 rounded bg-light">
+
+                                <small class="text-muted d-block">
+                                    Facility Type
+                                </small>
+
+                                <strong>
+                                    @Model.FacilityType
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="p-3 rounded bg-light">
+
+                                <small class="text-muted d-block">
+                                    Location
+                                </small>
+
+                                <strong>
+                                    @Model.Location
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="p-3 rounded bg-light">
+
+                                <small class="text-muted d-block">
+                                    Capacity
+                                </small>
+
+                                <strong>
+                                    @Model.Capacity people
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Description))
+                    {
+                        <div class="alert alert-info mb-4">
+
+                            @Model.Description
+
+                        </div>
+                    }
+
+
+                    <hr class="my-4" />
+
+
+                    <!-- BOOKING FORM -->
+
+                    <form asp-controller="Booking"
+                          asp-action="Create"
+                          method="post">
+
+                        <!-- FACILITY ID -->
+
+                        <input type="hidden"
+                               name="facilityId"
+                               value="@Model.FacilityID" />
+
+
+                        <!-- BOOKING DETAILS -->
+
+                        <h4 class="fw-bold mb-3">
+                            Booking Details
+                        </h4>
+
+
+                        <!-- BOOKING DATE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Booking Date
+                            </label>
+
+                            <input type="date"
+                                   name="bookingDate"
+                                   id="bookingDate"
+                                   class="form-control"
+                                   required />
+
+                        </div>
+
+
+                        <!-- START AND END TIME -->
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Start Time
+                                </label>
+
+                                <input type="time"
+                                       id="startTime"
+                                       name="startTime"
+                                       class="form-control"
+                                       required />
+
+                            </div>
+
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    End Time
+                                </label>
+
+                                <input type="time"
+                                       id="endTime"
+                                       name="endTime"
+                                       class="form-control"
+                                       required />
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LIVE PRICE CALCULATION -->
+
+                        <div class="price-box mb-4">
+
+                            <div class="price-information">
+
+                                <div>
+
+                                    <span class="price-label">
+                                        Facility Rate
+                                    </span>
+
+                                    <strong class="price-rate">
+                                        Rs. 900 / hour
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="duration-information">
+
+                                    <span class="price-label">
+                                        Selected Duration
+                                    </span>
+
+                                    <strong id="durationDisplay">
+                                        0 hours
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="price-total">
+
+                                <span>
+                                    Total Amount
+                                </span>
+
+                                <strong id="amountDisplay">
+                                    Rs. 0.00
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PAYMENT METHOD -->
+
+                        <h4 class="fw-bold mb-3">
+                            Payment Method
+                        </h4>
+
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Select Payment Method
+                            </label>
+
+                            <select id="paymentMethod"
+                                    name="paymentMethod"
+                                    class="form-select"
+                                    required>
+
+                                <option value="">
+                                    Select a payment method
+                                </option>
+
+                                <option value="Cash">
+                                    Cash — Pay Physically at Facility
+                                </option>
+
+                                <option value="Online">
+                                    Online Payment — Card
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- CASH PAYMENT SECTION -->
+
+                        <div id="cashSection"
+                             class="payment-option cash-option mb-4"
+                             style="display:none;">
+
+                            <div class="payment-icon">
+                                💵
+                            </div>
+
+                            <div>
+
+                                <h5 class="fw-bold mb-1">
+                                    Cash Payment
+                                </h5>
+
+                                <p class="mb-0 text-muted">
+
+                                    Pay the booking amount physically
+                                    at the facility when you arrive.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ONLINE CARD PAYMENT SECTION -->
+
+                        <div id="cardSection"
+                             class="card-payment-box mb-4"
+                             style="display:none;">
+
+                            <div class="d-flex align-items-center mb-3">
+
+                                <div class="payment-icon me-3">
+                                    💳
+                                </div>
+
+                                <div>
+
+                                    <h5 class="fw-bold mb-1">
+                                        Online Card Payment
+                                    </h5>
+
+                                    <small class="text-muted">
+                                        Enter your card details below
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- SECURITY MESSAGE -->
+
+                            <div class="alert alert-info">
+
+                                <small>
+
+                                    <strong>Secure Payment:</strong>
+                                    Full card number and CVV are not
+                                    stored in the database.
+
+                                </small>
+
+                            </div>
+
+
+                            <!-- CARDHOLDER NAME -->
+
+                            <div class="mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Cardholder Name
+                                </label>
+
+                                <input type="text"
+                                       id="cardholderName"
+                                       name="cardholderName"
+                                       class="form-control"
+                                       placeholder="Name on card" />
+
+                            </div>
+
+
+                            <!-- CARD NUMBER -->
+
+                            <div class="mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Card Number
+                                </label>
+
+                                <input type="text"
+                                       id="cardNumber"
+                                       name="cardNumber"
+                                       class="form-control"
+                                       maxlength="19"
+                                       inputmode="numeric"
+                                       autocomplete="off"
+                                       placeholder="1234 5678 9012 3456" />
+
+                            </div>
+
+
+                            <!-- EXPIRY + CVV -->
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label fw-semibold">
+                                        Expiry Date
+                                    </label>
+
+                                    <input type="text"
+                                           id="expiryDate"
+                                           name="expiryDate"
+                                           class="form-control"
+                                           maxlength="5"
+                                           placeholder="MM/YY"
+                                           autocomplete="off" />
+
+                                </div>
+
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label fw-semibold">
+                                        CVV
+                                    </label>
+
+                                    <input type="password"
+                                           id="cvv"
+                                           name="cvv"
+                                           class="form-control"
+                                           maxlength="3"
+                                           inputmode="numeric"
+                                           autocomplete="off"
+                                           placeholder="123" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CONFIRM BOOKING -->
+
+                        <button type="submit"
+                                class="btn btn-success w-100 py-3 fw-semibold">
+
+                            Confirm Booking
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- BACK TO SEARCH -->
+
+                    <div class="text-center mt-4">
+
+                        <a asp-controller="Facility"
+                           asp-action="Search"
+                           class="text-success text-decoration-none">
+
+                            ← Back to Facility Search
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     BOOKING PAGE JAVASCRIPT
+     ===================================================== -->
+
+<script>
+
+    /* -----------------------------------------------
+       GET PAGE ELEMENTS
+       ----------------------------------------------- */
+
+    const startTime =
+        document.getElementById("startTime");
+
+    const endTime =
+        document.getElementById("endTime");
+
+    const amountDisplay =
+        document.getElementById("amountDisplay");
+
+    const durationDisplay =
+        document.getElementById("durationDisplay");
+
+    const paymentMethod =
+        document.getElementById("paymentMethod");
+
+    const cashSection =
+        document.getElementById("cashSection");
+
+    const cardSection =
+        document.getElementById("cardSection");
+
+
+    /* -----------------------------------------------
+       FACILITY RATE
+       Rs. 900 PER HOUR
+       ----------------------------------------------- */
+
+    const hourlyRate = 900;
+
+
+    /* -----------------------------------------------
+       CALCULATE TOTAL AMOUNT
+       ----------------------------------------------- */
+
+    function calculateAmount() {
+
+        if (!startTime.value || !endTime.value) {
+
+            durationDisplay.innerText =
+                "0 hours";
+
+            amountDisplay.innerText =
+                "Rs. 0.00";
+
+            return;
+
+        }
+
+
+        const startParts =
+            startTime.value.split(":");
+
+        const endParts =
+            endTime.value.split(":");
+
+
+        const startMinutes =
+            parseInt(startParts[0]) * 60 +
+            parseInt(startParts[1]);
+
+
+        const endMinutes =
+            parseInt(endParts[0]) * 60 +
+            parseInt(endParts[1]);
+
+
+        const difference =
+            endMinutes - startMinutes;
+
+
+        /* Invalid time */
+
+        if (difference <= 0) {
+
+            durationDisplay.innerText =
+                "Invalid time";
+
+            amountDisplay.innerText =
+                "Rs. 0.00";
+
+            return;
+
+        }
+
+
+        /* Convert minutes into hours */
+
+        const hours =
+            difference / 60;
+
+
+        /* Calculate amount */
+
+        const amount =
+            hours * hourlyRate;
+
+
+        /* Display duration */
+
+        if (hours === 1) {
+
+            durationDisplay.innerText =
+                "1 hour";
+
+        }
+        else {
+
+            durationDisplay.innerText =
+                hours + " hours";
+
+        }
+
+
+        /* Display amount */
+
+        amountDisplay.innerText =
+            "Rs. " + amount.toFixed(2);
+
+    }
+
+
+    /* -----------------------------------------------
+       UPDATE WHEN START TIME CHANGES
+       ----------------------------------------------- */
+
+    startTime.addEventListener(
+        "change",
+        calculateAmount
+    );
+
+
+    /* -----------------------------------------------
+       UPDATE WHEN END TIME CHANGES
+       ----------------------------------------------- */
+
+    endTime.addEventListener(
+        "change",
+        calculateAmount
+    );
+
+
+    /* -----------------------------------------------
+       PAYMENT METHOD SELECTION
+       ----------------------------------------------- */
+
+    paymentMethod.addEventListener(
+        "change",
+        function () {
+
+            if (this.value === "Cash") {
+
+                cashSection.style.display =
+                    "flex";
+
+                cardSection.style.display =
+                    "none";
+
+            }
+
+            else if (this.value === "Online") {
+
+                cashSection.style.display =
+                    "flex";
+
+                cashSection.style.display =
+                    "none";
+
+                cardSection.style.display =
+                    "block";
+
+            }
+
+            else {
+
+                cashSection.style.display =
+                    "none";
+
+                cardSection.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    /* -----------------------------------------------
+       CARD NUMBER FORMATTING
+       ----------------------------------------------- */
+
+    const cardNumber =
+        document.getElementById("cardNumber");
+
+
+    cardNumber.addEventListener(
+        "input",
+        function () {
+
+            let value =
+                this.value
+                    .replace(/\D/g, "")
+                    .substring(0, 16);
+
+
+            let formatted = "";
+
+
+            for (
+                let i = 0;
+                i < value.length;
+                i++
+            ) {
+
+                if (
+                    i > 0 &&
+                    i % 4 === 0
+                ) {
+
+                    formatted += " ";
+
+                }
+
+
+                formatted += value[i];
+
+            }
+
+
+            this.value =
+                formatted;
+
+        }
+    );
+
+
+    /* -----------------------------------------------
+       EXPIRY DATE FORMATTING
+       ----------------------------------------------- */
+
+    const expiryDate =
+        document.getElementById("expiryDate");
+
+
+    expiryDate.addEventListener(
+        "input",
+        function () {
+
+            let value =
+                this.value
+                    .replace(/\D/g, "")
+                    .substring(0, 4);
+
+
+            if (value.length >= 3) {
+
+                value =
+                    value.substring(0, 2) +
+                    "/" +
+                    value.substring(2);
+
+            }
+
+
+            this.value =
+                value;
+
+        }
+    );
+
+
+    /* -----------------------------------------------
+       CVV ONLY NUMBERS
+       ----------------------------------------------- */
+
+    const cvv =
+        document.getElementById("cvv");
+
+
+    cvv.addEventListener(
+        "input",
+        function () {
+
+            this.value =
+                this.value
+                    .replace(/\D/g, "")
+                    .substring(0, 3);
+
+        }
+    );
+
+
+</script>
+
+

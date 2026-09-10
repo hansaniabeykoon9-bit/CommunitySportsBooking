@@ -1,0 +1,170 @@
+﻿@model CommunitySportsBooking.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Member Sign In";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6 col-lg-5">
+
+            <div class="text-center mb-4">
+
+                <span class="text-success fw-bold">
+                    COMMUNITY SPORTS COUNCIL
+                </span>
+
+                <h1 class="fw-bold mt-2">
+                    Member Sign In
+                </h1>
+
+                <p class="text-muted">
+                    Sign in to search facilities, make bookings
+                    and submit reviews.
+                </p>
+
+            </div>
+
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+
+
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3">
+            </div>
+
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-5">
+
+                    <form asp-controller="Account"
+                          asp-action="Login"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+
+                        <!-- EMAIL -->
+
+                        <div class="mb-4">
+
+                            <label asp-for="Email"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="Email"
+                                   class="form-control"
+                                   placeholder="Enter your email address" />
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="mb-2">
+
+                            <label asp-for="Password"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="Password"
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Enter your password" />
+
+                            <span asp-validation-for="Password"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+
+                        <!-- FORGOT PASSWORD -->
+
+                        <div class="text-end mb-4">
+
+                            <a asp-controller="Account"
+                               asp-action="ForgotPassword"
+                               class="text-success fw-semibold">
+
+                                Forgot Password?
+
+                            </a>
+
+                        </div>
+
+
+                        <!-- SIGN IN -->
+
+                        <button type="submit"
+                                class="btn btn-success w-100 py-2">
+
+                            Sign In
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- REGISTER -->
+
+                    <div class="text-center mt-4">
+
+                        <span class="text-muted">
+                            Don't have an account?
+                        </span>
+
+                        <a asp-controller="Account"
+                           asp-action="Register"
+                           class="text-success fw-semibold">
+
+                            Become a Member
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- HOME -->
+
+                    <div class="text-center mt-3">
+
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           class="text-muted">
+
+                            ← Back to Home
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

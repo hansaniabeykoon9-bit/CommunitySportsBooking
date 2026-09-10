@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>
+        @ViewData["Title"] - Community Sports
+    </title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+
+    <header>
+
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom shadow-sm">
+
+            <div class="container">
+
+                <!-- BRAND -->
+
+                <a class="navbar-brand fw-bold"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    Community Sports
+
+                </a>
+
+
+                <!-- MOBILE MENU BUTTON -->
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+
+                    <span class="navbar-toggler-icon"></span>
+
+                </button>
+
+
+                <!-- NAVIGATION -->
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                    <ul class="navbar-nav flex-grow-1">
+
+                        <!-- HOME -->
+
+                        <li class="nav-item">
+
+                            <a class="nav-link text-dark"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                Home
+
+                            </a>
+
+                        </li>
+
+
+                        <!-- FACILITIES -->
+
+                        <li class="nav-item">
+
+                            <a class="nav-link text-dark"
+                               asp-controller="Facility"
+                               asp-action="GuestSearch">
+
+                                Facilities
+
+                            </a>
+
+                        </li>
+
+
+                        <!-- REVIEWS -->
+
+                        <li class="nav-item">
+
+                            <a class="nav-link text-dark"
+                               asp-controller="Review"
+                               asp-action="Search">
+
+                                Reviews
+
+                            </a>
+
+                        </li>
+
+
+                        <!-- INQUIRY -->
+
+                        <li class="nav-item">
+
+                            <a class="nav-link text-dark"
+                               asp-controller="Inquiry"
+                               asp-action="Create">
+
+                                Inquiry
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+
+                    <!-- RIGHT SIDE NAVIGATION -->
+
+                    <ul class="navbar-nav">
+
+                        @if (Context.Session.GetInt32("MemberID") != null)
+                        {
+                            <!-- DASHBOARD -->
+
+                            <li class="nav-item">
+
+                                <a class="nav-link text-success fw-semibold"
+                                   asp-controller="Account"
+                                   asp-action="MemberDashboard">
+
+                                    Dashboard
+
+                                </a>
+
+                            </li>
+
+
+                            <!-- SIGN OUT -->
+
+                            <li class="nav-item">
+
+                                <a class="nav-link text-danger"
+                                   asp-controller="Account"
+                                   asp-action="Logout">
+
+                                    Sign Out
+
+                                </a>
+
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- SIGN IN -->
+
+                            <li class="nav-item">
+
+                                <a class="btn btn-outline-dark btn-sm mt-1 me-2"
+                                   asp-controller="Account"
+                                   asp-action="Login">
+
+                                    Sign In
+
+                                </a>
+
+                            </li>
+
+
+                            <!-- BECOME A MEMBER -->
+
+                            <li class="nav-item">
+
+                                <a class="btn btn-success btn-sm mt-1"
+                                   asp-controller="Account"
+                                   asp-action="Register">
+
+                                    Become a Member
+
+                                </a>
+
+                            </li>
+                        }
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main role="main">
+
+        @RenderBody()
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="border-top footer text-muted mt-5">
+
+        <div class="container py-3 text-center">
+
+            &copy; 2026 - Community Sports Council
+
+            <span class="mx-2">|</span>
+
+            <a asp-controller="Home"
+               asp-action="Privacy"
+               class="text-decoration-none">
+
+                Privacy
+
+            </a>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
+    @await RenderSectionAsync(
+    "Scripts",
+        required: false)
+
+</body>
+</html>

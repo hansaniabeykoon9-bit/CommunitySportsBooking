@@ -1,0 +1,154 @@
+﻿@{
+    ViewData["Title"] = "Send an Inquiry";
+}
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <span class="text-success fw-bold">
+            COMMUNITY SPORTS COUNCIL
+        </span>
+
+        <h1 class="fw-bold mt-2">
+            Send an Inquiry
+        </h1>
+
+        <p class="text-muted">
+            Have a question? Send us a message and our team will assist you.
+        </p>
+
+    </div>
+
+
+    @if (TempData["InquirySuccess"] != null)
+    {
+        <div class="alert alert-success">
+            <strong>Success!</strong>
+            @TempData["InquirySuccess"]
+        </div>
+    }
+
+
+    @if (TempData["InquiryError"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["InquiryError"]
+        </div>
+    }
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <form asp-controller="Inquiry"
+                          asp-action="Create"
+                          method="post">
+
+
+                        <!-- NAME -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Name
+                            </label>
+
+                            <input type="text"
+                                   name="name"
+                                   class="form-control"
+                                   placeholder="Enter your name"
+                                   required />
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Email
+                            </label>
+
+                            <input type="email"
+                                   name="email"
+                                   class="form-control"
+                                   placeholder="Enter your email address"
+                                   required />
+
+                        </div>
+
+
+                        <!-- SUBJECT -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Subject
+                            </label>
+
+                            <input type="text"
+                                   name="subject"
+                                   class="form-control"
+                                   placeholder="What is your inquiry about?"
+                                   required />
+
+                        </div>
+
+
+                        <!-- MESSAGE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Message
+                            </label>
+
+                            <textarea name="message"
+                                      class="form-control"
+                                      rows="6"
+                                      placeholder="Write your message here..."
+                                      required></textarea>
+
+                        </div>
+
+
+                        <!-- SUBMIT -->
+
+                        <button type="submit"
+                                class="btn btn-success w-100 py-2">
+
+                            Send Inquiry
+
+                        </button>
+
+                    </form>
+
+
+                    <div class="text-center mt-4">
+
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           class="text-success text-decoration-none">
+
+                            ← Back to Home
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

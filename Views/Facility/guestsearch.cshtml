@@ -1,0 +1,254 @@
+﻿@model List<CommunitySportsBooking.Models.Facility>
+
+@{
+    ViewData["Title"] = "Explore Facilities";
+}
+
+<div class="container py-5">
+
+    <!-- PAGE HEADER -->
+    <div class="text-center mb-5">
+
+        <span class="text-success fw-bold">
+            COMMUNITY SPORTS COUNCIL
+        </span>
+
+        <h1 class="fw-bold mt-2">
+            Explore Sports Facilities
+        </h1>
+
+        <p class="text-muted">
+            Browse basic facility information and general availability
+            before becoming a member.
+        </p>
+
+    </div>
+
+
+    <!-- GUEST ACCESS NOTICE -->
+    <div class="alert alert-info shadow-sm mb-4">
+
+        <strong>Guest Access</strong>
+
+        <p class="mb-0 mt-1">
+            Guests can search facilities by type and location and view
+            basic availability information. Detailed booking information
+            is restricted to registered members.
+        </p>
+
+    </div>
+
+
+    <!-- RESTRICTED SEARCH -->
+    <div class="card border-0 shadow-sm mb-5">
+
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-3">
+                Find a Facility
+            </h4>
+
+            <form asp-controller="Facility"
+                  asp-action="GuestSearch"
+                  method="get">
+
+                <div class="row">
+
+                    <!-- FACILITY TYPE -->
+
+                    <div class="col-md-5 mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Facility Type
+                        </label>
+
+                        <input type="text"
+                               name="facilityType"
+                               class="form-control"
+                               placeholder="e.g. Football, Tennis" />
+
+                    </div>
+
+
+                    <!-- LOCATION -->
+
+                    <div class="col-md-5 mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Location
+                        </label>
+
+                        <input type="text"
+                               name="location"
+                               class="form-control"
+                               placeholder="e.g. Kandy, Peradeniya" />
+
+                    </div>
+
+
+                    <!-- SEARCH BUTTON -->
+
+                    <div class="col-md-2 mb-3 d-flex align-items-end">
+
+                        <button type="submit"
+                                class="btn btn-success w-100">
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ERROR MESSAGE -->
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+
+    <!-- RESULTS -->
+
+    <div class="row g-4">
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="col-12">
+
+                <div class="alert alert-warning text-center">
+                    No facilities found.
+                </div>
+
+            </div>
+        }
+        else
+        {
+            foreach (var facility in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card h-100 border-0 shadow-sm">
+
+                        <div class="card-body p-4">
+
+                            <!-- FACILITY NAME -->
+
+                            <h4 class="fw-bold mb-2">
+                                @facility.FacilityName
+                            </h4>
+
+
+                            <!-- FACILITY TYPE -->
+
+                            <p class="text-success fw-semibold mb-3">
+                                @facility.FacilityType
+                            </p>
+
+
+                            <!-- LOCATION -->
+
+                            <p class="mb-3">
+
+                                <strong>Location:</strong>
+                                @facility.Location
+
+                            </p>
+
+
+                            <!-- GENERAL AVAILABILITY ONLY -->
+
+                            <div class="mb-3">
+
+                                <strong>Availability:</strong>
+
+                                @if (facility.Status.Equals(
+                                                        "Available",
+                                                        StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <span class="badge bg-success ms-1">
+                                        Available
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary ms-1">
+                                        @facility.Status
+                                    </span>
+                                }
+
+                            </div>
+
+
+                            <hr />
+
+
+                            <!-- RESTRICTED BOOKING MESSAGE -->
+
+                            <div class="alert alert-light border small mb-0">
+
+                                <strong>
+                                    Member Access Required
+                                </strong>
+
+                                <br />
+
+                                Detailed booking information and
+                                reservation options are available
+                                to registered members only.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+
+
+    <!-- BOTTOM ACTIONS -->
+
+    <div class="text-center mt-5">
+
+        <a asp-controller="Account"
+           asp-action="Register"
+           class="btn btn-success me-2">
+
+            Become a Member
+
+        </a>
+
+
+        <a asp-controller="Account"
+           asp-action="Login"
+           class="btn btn-outline-success me-2">
+
+            Sign In
+
+        </a>
+
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            Back to Home
+
+        </a>
+
+    </div>
+
+</div>

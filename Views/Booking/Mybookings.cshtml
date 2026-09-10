@@ -1,0 +1,223 @@
+﻿@model List<CommunitySportsBooking.Models.Booking>
+
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<div class="container py-5">
+
+    <!-- PAGE HEADER -->
+    <div class="text-center mb-5">
+
+        <span class="text-success fw-bold">
+            COMMUNITY SPORTS COUNCIL
+        </span>
+
+        <h1 class="fw-bold mt-2">
+            My Bookings
+        </h1>
+
+        <p class="text-muted">
+            View your current and previous facility bookings.
+        </p>
+
+    </div>
+
+
+    <!-- SUCCESS MESSAGE -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success mb-4">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+
+    <!-- ERROR MESSAGE -->
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger mb-4">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="row g-4">
+
+            @foreach (var booking in Model)
+            {
+                <div class="col-lg-6">
+
+                    <div class="card border-0 shadow-sm h-100">
+
+                        <div class="card-body p-4">
+
+                            <!-- FACILITY -->
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+
+                                <div>
+
+                                    <span class="text-success fw-semibold">
+                                        FACILITY
+                                    </span>
+
+                                    <h3 class="fw-bold mt-1 mb-0">
+                                        @booking.FacilityName
+                                    </h3>
+
+                                </div>
+
+
+                                <!-- STATUS -->
+                                @if (booking.BookingStatus == "Confirmed")
+                                {
+                                    <span class="badge bg-success">
+                                        Confirmed
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        @booking.BookingStatus
+                                    </span>
+                                }
+
+                        </div>
+
+
+                        <hr />
+
+
+                        <!-- BOOKING DATE -->
+                        <div class="row g-3 mb-3">
+
+                            <div class="col-md-6">
+
+                                <small class="text-muted d-block">
+                                    Booking Date
+                                </small>
+
+                                <strong>
+                                    @booking.BookingDate.ToString("dd MMM yyyy")
+                                </strong>
+
+                            </div>
+
+
+                            <!-- TIME -->
+                            <div class="col-md-6">
+
+                                <small class="text-muted d-block">
+                                    Time
+                                </small>
+
+                                <strong>
+                                    @DateTime.Today.Add(booking.StartTime).ToString("hh:mm tt")
+                                    –
+                                    @DateTime.Today.Add(booking.EndTime).ToString("hh:mm tt")
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- AMOUNT -->
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+
+                                <small class="text-muted d-block">
+                                    Amount
+                                </small>
+
+                                <strong class="text-success">
+                                    Rs. @booking.Amount.ToString("N2")
+                                </strong>
+
+                            </div>
+
+
+                            <!-- PAYMENT ID -->
+                            <div class="col-md-6">
+
+                                <small class="text-muted d-block">
+                                    Payment ID
+                                </small>
+
+                                <strong>
+                                    @(booking.PaymentID == 0
+                                                                    ? "Not Available"
+                                                                    : booking.PaymentID.ToString())
+                            </strong>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+                }
+
+        </div>
+    }
+    else
+    {
+        <!-- EMPTY STATE -->
+
+        <div class="text-center py-5">
+
+            <div class="mb-3"
+                 style="font-size: 48px;">
+                📅
+            </div>
+
+            <h3 class="fw-bold">
+                No bookings yet
+            </h3>
+
+            <p class="text-muted">
+                You haven't made any facility bookings yet.
+            </p>
+
+            <a asp-controller="Facility"
+               asp-action="Search"
+               class="btn btn-success">
+
+                Find a Facility
+
+            </a>
+
+        </div>
+    }
+
+
+    <!-- ACTION BUTTONS -->
+
+    <div class="text-center mt-5">
+
+        <a asp-controller="Facility"
+           asp-action="Search"
+           class="btn btn-success me-2">
+
+            Book Another Facility
+
+        </a>
+
+        <a asp-controller="Account"
+           asp-action="MemberDashboard"
+           class="btn btn-outline-success">
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>

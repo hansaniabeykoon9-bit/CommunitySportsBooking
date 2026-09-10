@@ -1,0 +1,215 @@
+﻿@model List<CommunitySportsBooking.Models.Facility>
+
+@{
+    ViewData["Title"] = "Facility Search";
+}
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <span class="text-success fw-bold">
+            COMMUNITY SPORTS COUNCIL
+        </span>
+
+        <h1 class="fw-bold mt-2">
+            Find a Sports Facility
+        </h1>
+
+        <p class="text-muted">
+            Search available community sports facilities by type and location.
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="card border-0 shadow-sm mb-5">
+
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-4">
+                Search Facilities
+            </h4>
+
+            <form asp-controller="Facility"
+                  asp-action="Search"
+                  method="get">
+
+                <div class="row">
+
+                    <div class="col-md-5 mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Facility Type
+                        </label>
+
+                        <input type="text"
+                               name="facilityType"
+                               class="form-control"
+                               placeholder="e.g. Football Field" />
+
+                    </div>
+
+
+                    <div class="col-md-5 mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Location
+                        </label>
+
+                        <input type="text"
+                               name="location"
+                               class="form-control"
+                               placeholder="e.g. Kandy" />
+
+                    </div>
+
+
+                    <div class="col-md-2 mb-3 d-flex align-items-end">
+
+                        <button type="submit"
+                                class="btn btn-success w-100">
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ERROR -->
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+
+    <!-- FACILITIES -->
+
+    <div class="row g-4">
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="col-12">
+
+                <div class="alert alert-warning text-center">
+
+                    No facilities found.
+
+                </div>
+
+            </div>
+        }
+        else
+        {
+            foreach (var facility in Model)
+            {
+                <div class="col-md-6">
+
+                    <div class="card h-100 border-0 shadow-sm">
+
+                        <div class="card-body p-4">
+
+                            <h3 class="fw-bold">
+                                @facility.FacilityName
+                            </h3>
+
+                            <p class="text-success fw-semibold">
+                                @facility.FacilityType
+                            </p>
+
+                            <p>
+                                <strong>Location:</strong>
+                                @facility.Location
+                            </p>
+
+                            <p>
+                                <strong>Capacity:</strong>
+                                @facility.Capacity people
+                            </p>
+
+                            <p class="text-muted">
+                                @facility.Description
+                            </p>
+
+                            <p>
+                                <strong>Status:</strong>
+
+                                @if (facility.Status.Equals(
+                                                        "Available",
+                                                        StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <span class="badge bg-success">
+                                        Available
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        @facility.Status
+                                    </span>
+                                }
+
+                            </p>
+
+
+                            <!-- BOOK BUTTON -->
+                            @if (facility.Status.Equals(
+                                                "Available",
+                                                StringComparison.OrdinalIgnoreCase))
+                            {
+                                <a asp-controller="Booking"
+                                   asp-action="Create"
+                                   asp-route-facilityId="@facility.FacilityID"
+                                   class="btn btn-success">
+
+                                    Book This Facility
+
+                                </a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary"
+                                        disabled>
+
+                                    Currently Unavailable
+
+                                </button>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+
+
+    <div class="text-center mt-5">
+
+        <a asp-controller="Account"
+           asp-action="MemberDashboard"
+           class="btn btn-outline-secondary">
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
